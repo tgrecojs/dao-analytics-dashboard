@@ -3,13 +3,13 @@ import fleekStorage from '@fleekhq/fleek-storage-js'
 const postToFleekStorage = async ({
   tokenUri = 'default file.jpg',
   sanitizedName = 'default NFT name',
-  creator = ''
+  orginizationName = ''
 }) => {
   const response = await fleekStorage.upload({
     apiKey: process.env.FLEEK_API_KEY,
     apiSecret: process.env.FLEEK_API_SECRET,
     key: `${sanitizedName}`, //?
-    bucket: `tgrecojs-74725-team-bucket/zora-nft-assets/${creator}`,
+    bucket: `tgrecojs-74725-team-bucket/DAO-Analytics/${orginizationName}`,
     data: tokenUri
   })
 
@@ -20,7 +20,7 @@ const postToFleekStorage = async ({
 
 const postMetadataToFleek = async ({
   imgUrl = 'default image URL',
-  nftName = 'default NFT name',
+  daoName = 'default NFT name',
   price = 0,
   description = 'default NFT description string',
   creator = '',
@@ -39,7 +39,7 @@ const postMetadataToFleek = async ({
     bucket: `tgrecojs-74725-team-bucket/zora-nft-assets/${creator}`,
     data: JSON.stringify({
       imgUrl,
-      nftName,
+      daoName,
       price,
       description,
       sanitizedName,

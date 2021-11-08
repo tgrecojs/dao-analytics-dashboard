@@ -59,7 +59,23 @@ export {
 }
 
 const ethNetworkLookup = { 1: 'mainnet', 3: 'ropsten', 4: 'rinkeby' }
-
+const dashboardSetupSteps = [
+  {
+    label: 'User Authentication',
+    stepNumber: 0,
+    active: true,
+    completed: false,
+    description: 'Authenticate with MetaMask to use this application.'
+  },
+  {
+    label: 'Name of DAO',
+    stepNumber: 1,
+    active: false,
+    completed: false,
+    description:
+      'Input the name of the DAO you are operating this product on behalf of.'
+  }
+]
 // need to seperate this out to its own module
 export const {
   reducer: web3Reducer,
@@ -73,7 +89,8 @@ export const {
     setFleekMedia,
     setFleekMetadata,
     setZoraResponseData,
-    setIsMetamaskInstalled
+    setIsMetamaskInstalled,
+    completeStep
   },
   selectors: {
     getChainName,
@@ -95,13 +112,20 @@ export const {
     chainId: null,
     fleekMedia: {},
     fleekMetadata: {},
-    zoraResponseData: {}
+    dashboardSetupSteps
   },
   actions: {
     setChainId: (state, payload) => ({
       ...state,
       chainId: payload,
       chainName: ethNetworkLookup[parseInt(payload)]
+    }),
+    completeStep: (state, payload) => ({
+      ...state,
+      dashboardSetupSteps: [
+        { ...dashboardSetupSteps[0], completed: true, active: false },
+        { ...dashboardSetupSteps[1], active: true }
+      ]
     }),
     setUserInfo: (s, x) => ({ ...s, userInfo: x })
   },

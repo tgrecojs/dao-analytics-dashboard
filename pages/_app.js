@@ -1,17 +1,31 @@
-import App from "next/app";
-import React from "react";
-import withReduxStore from "../lib/with-redux-store";
-import { Provider } from "react-redux";
+import React from 'react'
+import withReduxStore from '../lib/with-redux-store'
+import { Provider } from 'react-redux'
+import { object } from 'prop-types'
+import { CacheProvider } from '@emotion/react'
 
-class MyApp extends App {
-  render() {
-    const { Component, pageProps, reduxStore } = this.props;
-    return (
+import createEmotionCache from '../source/shared/MUI/createEmotionCache'
+const styleCache = createEmotionCache()
+
+function MyApp({
+  Component,
+  emotionCache = styleCache,
+  pageProps,
+  reduxStore
+}) {
+  return (
+    <CacheProvider value={emotionCache}>
       <Provider store={reduxStore}>
         <Component {...pageProps} />
       </Provider>
-    );
-  }
+    </CacheProvider>
+  )
+}
+MyApp.propTypes = {
+  emotionCache: object,
+  Component: object,
+  pageProps: object,
+  reduxStore: object
 }
 
-export default withReduxStore(MyApp);
+export default withReduxStore(MyApp)

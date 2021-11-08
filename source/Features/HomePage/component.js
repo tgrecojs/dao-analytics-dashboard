@@ -16,7 +16,7 @@ const HomePage = ({ viewportType }) => {
         <>
           <h3>Successful mint!</h3>
           <ViewNFT
-            nftName={nftMedia.nftName}
+            daoName={nftMedia.daoName}
             imgSrc={nftMedia.publicUrl}
             description={nftMedia.description}
             price={nftMedia.price}

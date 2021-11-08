@@ -7,13 +7,15 @@ import {
 } from '../Features/MetamaskAuth/reducer'
 import { reducer as web3ConnectionReducer } from './hocs/withWeb3/reducer'
 import { reducer as formReducer } from '../Features/CreateNewNFT/reducer'
+import { existingOrgReducer } from '../Features/ExistingDAO/reducer'
 
 import rootSaga from './sagas'
 import createSagaMiddleware from '@redux-saga/core'
 const exampleInitialState = {
   metamaskProviderState: ethProviderReducer(),
   userSessionState: userSessionReducer(),
-  sendTransactionState: formReducer()
+  sendTransactionState: formReducer(),
+  existingOrgState: existingOrgReducer()
 }
 
 export function initializeStore(initialState = exampleInitialState) {
@@ -22,13 +24,14 @@ export function initializeStore(initialState = exampleInitialState) {
     metamaskProviderState: ethProviderReducer,
     userSessionState: userSessionReducer,
     sendTransactionState: formReducer,
-    web3ConnectionState: web3ConnectionReducer
+    web3ConnectionState: web3ConnectionReducer,
+    existingOrgState: existingOrgReducer
   })
   return {
     ...createStore(
       rootReducer,
       initialState,
-      composeWithDevTools(applyMiddleware(sagaMiddleware))
+      applyMiddleware(...[sagaMiddleware, logger])
     ),
     runSaga: sagaMiddleware.run(rootSaga)
   }

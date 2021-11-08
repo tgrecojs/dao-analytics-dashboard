@@ -8,7 +8,8 @@ import {
   setError,
   setWalletAddress,
   setIsMetamaskInstalled,
-  setChainId
+  setChainId,
+  completeStep
 } from './reducer'
 import isEmpty from 'crocks/predicates/isEmpty'
 import {
@@ -31,6 +32,7 @@ export function* handleMetamaskConnection() {
 function* handleConnectionDetails(action) {
   yield put(setWalletAddress(action.payload))
   yield put(setChainId(window.ethereum.chainId))
+  yield put(completeStep({id: 0}))
   // TODO: implement automatic refresh
   // ex. yield call()
 }

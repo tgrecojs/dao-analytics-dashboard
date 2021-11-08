@@ -18,13 +18,7 @@ const sendTxnStates = [
     ['report error', SEND_ERROR, ['handle error', MINT_READY]],
     [
       'report success',
-      SEND_SUCCESS,
-      [
-        'mint token',
-        MINTING_TOKEN,
-        ['report mint error', MINT_ERROR, ['handle mint error', MINT_READY]],
-        ['report mint success', MINT_READY]
-      ]
+      SEND_SUCCESS
     ]
   ]
 ]

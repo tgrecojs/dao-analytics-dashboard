@@ -5,13 +5,13 @@ import match from 'riteway/match'
 import ViewNFT from './component'
 
 describe('viewNFT component', async (assert) => {
-  const nftName = 'My NFT'
+  const daoName = 'My NFT'
   const price = 2
   const description = 'My NFT Description'
   const imgSrc = '/my-nft.jpg'
   const $ = render(
     <ViewNFT
-      nftName={nftName}
+      daoName={daoName}
       price={price}
       description={description}
       imgSrc={imgSrc}
@@ -20,10 +20,10 @@ describe('viewNFT component', async (assert) => {
   const contains = match($('.nftWrapper').html())
 
   assert({
-    given: 'an nftName',
-    should: 'render contain the nftName text',
-    actual: contains(nftName),
-    expected: nftName
+    given: 'an daoName',
+    should: 'render contain the daoName text',
+    actual: contains(daoName),
+    expected: daoName
   })
 
   assert({

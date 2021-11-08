@@ -1,6 +1,9 @@
 import React, { useState, useRef } from 'react'
 import { string, func, number, bool } from 'prop-types'
 import { FormWrapper } from '../../shared/styled'
+import { setter } from '../../shared/utils/input'
+import { Button, TextField } from '@mui/material'
+import { Box } from '@mui/system'
 
 const CreateNewNFT = ({
   name = '',
@@ -13,86 +16,44 @@ const CreateNewNFT = ({
 }) => {
   const fileRef = useRef(null)
 
-  const [nftName, setNftName] = useState(name)
-  const [askingPrice, setAskingPrice] = useState(price)
-  const [description, setDescription] = useState(descriptionText)
-  const [fileName, setFileName] = useState(mediaName)
+  const [daoName, setDaoName] = useState(name)
+  const [governanceToken, setGovernanceToken] = useState(price)
 
-  const setter = (set) => (e) => {
-    const { target } = e
-    const { value } = target
-    set(value)
-  }
-
-  const resetRef = (ref) => (ref.current.value = null)
-
-  const setFiles = (set) => (e) => {
-    const { target } = e
-    const { files } = target
-    set(files[0])
-  }
-
-  console.log({ fileName })
 
   const handleSubmit = (e) => {
     e.preventDefault()
     onSubmit({
-      nftName,
-      description,
-      price: askingPrice,
-      tokenUri: fileName,
-      mimeType: fileName.type,
-      creator: userAddress
+      daoName,
+      governanceToken
     })
-    setNftName('')
-    setAskingPrice(0)
-    setDescription('')
-    resetRef(fileRef)
+    setDaoName('')
+    setGovernanceToken('')
   }
-  return status === 'mint ready' ? (
-    <FormWrapper as="form" onSubmit={handleSubmit} py={3}>
-      <label htmlFor="name">NFT Name</label>
-      <input
-        value={nftName}
-        id="name"
-        name="name"
-        type="text"
-        onChange={setter(setNftName)}
-      />
-      <label htmlFor="description">Description</label>
-      <input
-        value={description}
-        id="description"
-        name="description"
-        type="text"
-        onChange={setter(setDescription)}
-      />
-      <label htmlFor="askingPrice">Asking Price</label>
-      <input
-        value={askingPrice}
-        id="askingPrice"
-        name="askingPrice"
-        type="number"
-        onChange={setter(setAskingPrice)}
-      />
-      <label htmlFor="nftMedia" name="nftMedia">
-        Token URI (media)
-      </label>
+  return (
+    <div>
+     <TextField label= "Orginization Name"
+     required
+     id="daoName"
+     name="daoName"
+     type="text"
+     onChange={setter(setDaoName)}
+     value={daoName}
+     sx={{m:2}}
+     />
+   <TextField label= "Governane Token Address"
+     required
+     id="governanceToken"
+     name="governanceToken"
+     type="text"
+     onChange={setter(setGovernanceToken)}
+     value={governanceToken}
+     sx={{m:2}}
 
-      <input
-        id="nftMedia"
-        name="nftMedia"
-        type="file"
-        ref={fileRef}
-        onChange={setFiles(setFileName)}
-      />
-      <button bg="blue" type="submit">
-        Send Transaction
-      </button>
-    </FormWrapper>
-  ) : (
-    <p>minting...</p>
+     /> <Box> <Button sx={{m: 2}} fullWidth={true} variant="outlined" size="large">Create Dashboard</Button>
+</Box>
+      </div>
   )
+  
 }
 
 CreateNewNFT.propTypes = {
