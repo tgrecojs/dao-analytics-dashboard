@@ -4,7 +4,7 @@ import {
   getTxnStatus,
   SEND_DATA,
   SEND_ERROR
-} from '../CreateNewNFT/reducer'
+} from '../CreateNewDAO/reducer'
 const MintToken = ({ children }) => {
   const txnStatus = useSelector(getTxnStatus)
   const txnError = useSelector(getTxnState)

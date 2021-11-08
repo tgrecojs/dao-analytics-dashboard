@@ -6,9 +6,9 @@ import {
 } from './reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { compose } from 'ramda'
-import CreateNFTForm from '../CreateNewNFT/component'
+import CreateNFTForm from '../CreateNewDAO/component'
 import ExistingDAO from '../ExistingDAO/component'
-import { getTxnStatus, sendTransaction } from '../CreateNewNFT/reducer'
+import { getTxnStatus, setupDaoAnalyticsPage } from '../CreateNewDAO/reducer'
 import {
   FormControl,
   FormControlLabel,
@@ -20,6 +20,7 @@ import { setIsExistingOrg } from '../ExistingDAO/reducer'
 import { setter } from '../../shared/utils/input'
 import SetupDashboard from '../SetupDashboard/component'
 import { Box } from '@mui/system'
+import SubmitButton from '../../shared/MUI/SubmitButton'
 
 const HomeScreen = ({ userAddress, onSubmit, txnStatus, exisitingOrgUser }) => {
   return exisitingOrgUser ? (
@@ -28,12 +29,12 @@ const HomeScreen = ({ userAddress, onSubmit, txnStatus, exisitingOrgUser }) => {
     <CreateNFTForm
       userAddress={userAddress}
       onSubmit={onSubmit}
-      status={txnStatus}
+      name={txnStatus}
     />
   )
 }
 
-const CreateNewDAO = ({ exisitingOrgUser = false, onChange, children }) => {
+const Container = ({ exisitingOrgUser = false, onChange, children }) => {
   return (
     <Box sx={{ p: 2, bgcolor: '#fff' }}>
       <FormControl component="fieldset">
@@ -70,59 +71,60 @@ const Web3Authentication = () => {
   const dashboardSetupSteps = useSelector(
     (x) => x.userSessionState.dashboardSetupSteps
   )
-  const walletAddress = useSelector(getWalletAddress)
+    const onSetupDao = compose(dispatch, setupDaoAnalyticsPage)
+  
+  const metamaskState = useSelector(x => x.metamaskProviderState.status)
+  console.log({metamaskS: metamaskState})
   const txnStatus = useSelector(getTxnStatus)
-  const onSendTxn = compose(dispatch, sendTransaction)
   return !isMetamaskInstalled ? (
     <div>
       <p>Please make sure the metamask extension is installed and try again.</p>
       <button onClick={() => window.location.reload()}>Reload Page</button>
     </div>
-  ) : walletAddress.length === 0 ? (
-    <div>
-      <button onClick={onConnectToMetamask}>Sign In withMetamask</button>
-    </div>
+  ) : metamaskState.status === "disconnected" ? (
+    <Box>
+      <SubmitButton
+        onClick={onConnectToMetamask}
+        buttonText="Sign In withMetamask"
+      />
+    </Box>
   ) : (
-    <>
-      <h2>Connected to wallet: {walletAddress}</h2>
+    <Box
+      sx={{
+        width: 800,
+        height: 700,
+        bgcolor: 'primary.main',
+        fontFamily: 'Roboto',
+        p: 2,
+        boxShadow: 3,
+        minWidth: 350,
+        margin: 'auto'
+      }}
+    >
       <Box
         sx={{
-          width: 800,
-          height: 700,
-          bgcolor: 'primary.main',
-          fontFamily: 'Roboto',
-          p: 2,
-          boxShadow: 3,
-          minWidth: 350,
-          margin: 'auto'
+          typography: 'h2',
+
+          textAlign: 'center'
         }}
       >
-        <Box
-          sx={{
-            typography: 'h2',
-
-            textAlign: 'center'
-          }}
-        >
-          DAO Analytics Dashboard
-        </Box>
-
-        <Box sx={{ p: 2, bgcolor: '#fff' }}>
-          <CreateNewDAO
-            exisitingOrgUser={exisitingOrgUser}
-            onChange={onToggleExisting}
-          >
-            <HomeScreen
-              exisitingOrgUser={exisitingOrgUser}
-              status={exisitingOrgUser}
-              userAddress={walletAddress}
-              onSubmit={onSendTxn}
-            />
-          </CreateNewDAO>
-        </Box>
+        DAO Analytics Dashboard
       </Box>
-      `
-    </>
+
+      <Box sx={{ p: 2, bgcolor: '#fff' }}>
+        <Container
+          exisitingOrgUser={exisitingOrgUser}
+          onChange={onToggleExisting}
+        >
+          <HomeScreen
+            exisitingOrgUser={exisitingOrgUser}
+            status={exisitingOrgUser}
+            userAddress={metamaskState.payload}
+            onSubmit={onSetupDao}
+          />
+        </Container>
+      </Box>
+    </Box>
   )
 }
 

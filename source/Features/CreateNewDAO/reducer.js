@@ -1,40 +1,37 @@
 import dsm from 'redux-dsm'
 
-const SEND_DATA = 'sending data'
+const SETUP_DAO_ANALYTICS_PAGE = 'sending data'
 const MINTING_TOKEN = 'minting token'
 const MINT_ERROR = 'mint token error'
 const MINT_SUCCESS = 'mint token success'
 const SEND_ERROR = 'send data error'
 const IDLE = 'idle'
-const MINT_READY = 'mint ready'
+const SETUP_DAO_READY = 'setup dao ready'
 const SEND_SUCCESS = 'send data success'
 
-const sendTxnStates = [
+const createDAOAnalyticsPageStates = [
   'initial',
-  MINT_READY,
+  SETUP_DAO_READY,
   [
-    'send transaction',
-    SEND_DATA,
-    ['report error', SEND_ERROR, ['handle error', MINT_READY]],
-    [
-      'report success',
-      SEND_SUCCESS
-    ]
+    'setup dao analytics page',
+    SETUP_DAO_ANALYTICS_PAGE,
+    ['report error', SEND_ERROR, ['handle error', SETUP_DAO_READY]],
+    ['report success', SEND_SUCCESS]
   ]
 ]
 
-const getTxnState = ({ sendTransactionState }) => sendTransactionState
+const getTxnState = ({ setupDAOAnalyticsState }) => setupDAOAnalyticsState
 const getTxnStatus = (x) => getTxnState(x).status
 
 const mintDSM = dsm({
-  component: 'CreateNewNFT',
-  description: 'send NFT txn',
-  actionStates: sendTxnStates
+  component: 'CreateNewDAO',
+  description: 'setup covalent DAO analytics dashboard',
+  actionStates: createDAOAnalyticsPageStates
 })
 
 const {
   actionCreators: {
-    sendTransaction,
+    setupDaoAnalyticsPage,
     reportError,
     reportSuccess,
     handleError,
@@ -49,7 +46,7 @@ const {
 export {
   getTxnState,
   getTxnStatus,
-  sendTransaction,
+  setupDaoAnalyticsPage,
   reportError,
   reportMintError,
   reportSuccess,
@@ -58,7 +55,7 @@ export {
   mintToken,
   reportMintSuccess,
   reducer,
-  SEND_DATA,
+  SETUP_DAO_ANALYTICS_PAGE,
   SEND_ERROR
 }
 

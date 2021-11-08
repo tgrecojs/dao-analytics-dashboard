@@ -33,7 +33,7 @@ const {
   actionCreators: {
     fetchAccount: connectToMetamask,
     reportError,
-    reportSuccess,
+    reportSuccess: reportMetamaskConnectionSuccess,
     handleError,
     disconnectWallet
   },
@@ -52,7 +52,7 @@ export {
   getConnectionPayload,
   connectToMetamask,
   reportError,
-  reportSuccess,
+  reportMetamaskConnectionSuccess,
   handleError,
   disconnectWallet,
   reducer

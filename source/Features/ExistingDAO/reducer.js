@@ -3,15 +3,25 @@ import autodux from 'autodux'
 const evaluateString = (str) => (str === 'true' ? true : false)
 const {
   reducer: existingOrgReducer,
-  selectors: { getOrgName, getIsExistingOrg },
-  actions: { setOrgName, setIsExistingOrg }
+  selectors: { getContractAddress, getOrgName, getIsExistingOrg },
+  actions: { setContractAddress, setOrgName, setIsExistingOrg, toggleForm }
 } = autodux({
   slice: 'existing orginzation dashboard',
   initial: {
     orgName: '',
-    isExistingOrg: false
+    contractAddress: '',
+    isExistingOrg: false,
+    hideForm: false
   },
   actions: {
+    toggleForm: (state) => ({
+      ...state,
+      hideForm: !state.hideForm
+    }),
+    setContractAddress: (state, payload) => ({
+      ...state,
+      contractAddress: payload
+    }),
     setIsExistingOrg: (state, payload) => ({
       ...state,
       isExistingOrg: evaluateString(payload)
@@ -19,16 +29,16 @@ const {
   }
 })
 
-const FETCH_DAO_DATA = 'feetching DAO data'
+const FETCH_DAO_DATA = 'fetching DAO data'
 const ADD_DATA_SET = 'adding dataset'
 const ADD_DATA_SET_ERROR = 'add dataset error'
 const ADD_DATA_SET_SUCCESS = 'add dataset success'
 const FETCH_DAO_DATA_ERROR = 'fetch DAO data error'
 const IDLE = 'idle'
 const FETCH_DAO_DATA_READY = 'fetch DAO data ready'
-const FETCH_DAO_DATA_SUCCESS = 'fetch DAO data success'
+const FETCH_DAO_DATA_SUCCESS = 'success'
 
-const sendTxnStates = [
+const viewDAOAnalyticsStates = [
   'initial',
   FETCH_DAO_DATA_READY,
   [
@@ -64,14 +74,14 @@ const getTxnState = ({ sendTransactionState }) => sendTransactionState
 const getTxnStatus = (x) => getTxnState(x).status
 
 const mintDSM = dsm({
-  component: 'CreateNewNFT',
-  description: 'send NFT txn',
-  actionStates: sendTxnStates
+  component: 'DAOHomepage',
+  description: 'view DAO analytics page',
+  actionStates: viewDAOAnalyticsStates
 })
 
 const {
   actionCreators: {
-    sendTransaction,
+    getData,
     reportError,
     reportSuccess,
     handleError,
@@ -87,11 +97,13 @@ export {
   existingOrgReducer,
   setIsExistingOrg,
   getIsExistingOrg,
+  setContractAddress,
+  getContractAddress,
   getOrgName,
   setOrgName,
   getTxnState,
   getTxnStatus,
-  sendTransaction,
+  getData,
   reportError,
   reportMintError,
   reportSuccess,
@@ -101,7 +113,8 @@ export {
   reportMintSuccess,
   reducer,
   FETCH_DAO_DATA,
-  FETCH_DAO_DATA_ERROR
+  FETCH_DAO_DATA_ERROR,
+  toggleForm
 }
 
 export default mintDSM

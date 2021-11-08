@@ -5,9 +5,8 @@ import monitorChangeEventsWatcher, {
   ethereumNetworkConnectionWatcher,
   ethereumWalletConnectionWatcher
 } from '../utils/jsonRpcHelpers'
-import sendTransactionWatcher, {
-  mintTokenWatcher
-} from '../../Features/CreateNewNFT/saga'
+import createNewDAOWatcher from '../../Features/CreateNewDAO/saga'
+import fetchDAOAnalyticsWatcher from '../../Features/ExistingDAO/saga'
 
 export default function* root() {
   // yield fork(monitorChangeEventsWatcher)fir
@@ -17,8 +16,7 @@ export default function* root() {
   yield spawn(web3ConnectionWatcher)
   yield fork(watchFetchMetamaskAccount)
   yield all([
-    sendTransactionWatcher(),
-    //listens for user to kick off mint transaction */
-    mintTokenWatcher()
+    call(createNewDAOWatcher),
+      call(fetchDAOAnalyticsWatcher)
   ])
 }

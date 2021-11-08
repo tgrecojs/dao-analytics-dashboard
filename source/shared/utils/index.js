@@ -55,5 +55,14 @@ const asyncGet = fromPromise(axios.get)
 const getData = maybeToAsync({}, propOr('data', {}))
 // utility fns
 const sanitizeString = compose(hyphenateString, trim, removeSpecialChars)
-
-export { asyncGet, getData, safeResponse, sanitizeString }
+const getCurrentTimestamp = () => new Date().toUTCString()
+const formatFleekResponse = ({ data = new Uint8Array() }) =>
+  JSON.parse(String.fromCharCode.apply(null, new Uint8Array(data)))
+export {
+  asyncGet,
+  formatFleekResponse,
+  getCurrentTimestamp,
+  getData,
+  safeResponse,
+  sanitizeString
+}

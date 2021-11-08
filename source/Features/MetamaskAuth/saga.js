@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects'
 import {
   connectToMetamask,
   reportError,
-  reportSuccess,
+  reportMetamaskConnectionSuccess,
   handleError,
   disconnectWallet,
   setError,
@@ -23,16 +23,17 @@ import { ethRpcActions } from '../../shared/utils/jsonRpcHelpers'
 export function* handleMetamaskConnection() {
   try {
     const user = yield call(requestEthAccount)
-    yield put(reportSuccess(user))
+    yield put(reportMetamaskConnectionSuccess(user))
   } catch (error) {
     yield put(reportError(error))
   }
 }
 
 function* handleConnectionDetails(action) {
+  console.log("inside")
   yield put(setWalletAddress(action.payload))
   yield put(setChainId(window.ethereum.chainId))
-  yield put(completeStep({id: 0}))
+  yield put(completeStep({ id: 0 }))
   // TODO: implement automatic refresh
   // ex. yield call()
 }
@@ -57,7 +58,7 @@ function* handleAccountChanged(action) {
 }
 
 function* watchFetchMetamaskAccount() {
-  yield takeLatest(reportSuccess().type, handleConnectionDetails)
+  yield takeLatest(reportMetamaskConnectionSuccess().type, handleConnectionDetails)
   yield takeLatest(ethRpcActions.networkChanged, handleNetworkChanged)
 }
 

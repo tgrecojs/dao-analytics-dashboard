@@ -1,16 +1,21 @@
 import fleekStorage from '@fleekhq/fleek-storage-js'
-
+const stringifyPayload = (obj = {}) => `"${JSON.stringify(obj)}"`
 const postToFleekStorage = async ({
-  tokenUri = 'default file.jpg',
-  sanitizedName = 'default NFT name',
-  orginizationName = ''
+  sanitizedName = 'default DAO name',
+  orginizationName = '',
+  governanceTokenAddress = '0x0954906da0bf32d5479e25f46056d22f08464cab',
+  creationDate = 'Mon, 22 Jul 1992 01:00:00 GMT'
 }) => {
   const response = await fleekStorage.upload({
     apiKey: process.env.FLEEK_API_KEY,
     apiSecret: process.env.FLEEK_API_SECRET,
     key: `${sanitizedName}`, //?
-    bucket: `tgrecojs-74725-team-bucket/DAO-Analytics/${orginizationName}`,
-    data: tokenUri
+    bucket: createFleekBucketString(`${sanitizedName}-data`),
+    data: JSON.stringify({
+      daoName: orginizationName,
+      governanceToken: governanceTokenAddress,
+      creationDate
+    })
   })
 
   // The function returns the hash of the file, the publicUrl, the key and the bucket.
@@ -18,37 +23,19 @@ const postToFleekStorage = async ({
   return { hash, key, publicUrl }
 }
 
-const postMetadataToFleek = async ({
-  imgUrl = 'default image URL',
-  daoName = 'default NFT name',
-  price = 0,
-  description = 'default NFT description string',
-  creator = '',
-  sanitizedName = 'default sanitized name'
-}) => {
-  console.log('tokenUri::', {
-    imgUrl,
-    env: process.env,
-    apiKey: process.env.FLEEK_API_KEY,
-    apiSecret: process.env.FLEEK_API_SECRET
-  })
-  const response = await fleekStorage.upload({
+const createFleekBucketString = (key) =>
+  `tgrecojs-74725-team-bucket/DAO-Analytics/${key}`
+
+const fetchFromFleekStorage = async ({ key = 'default-key' }) => {
+  const response = await fleekStorage.get({
     apiKey: process.env.FLEEK_API_KEY,
     apiSecret: process.env.FLEEK_API_SECRET,
-    key: `${sanitizedName}/metadata`, //?
-    bucket: `tgrecojs-74725-team-bucket/zora-nft-assets/${creator}`,
-    data: JSON.stringify({
-      imgUrl,
-      daoName,
-      price,
-      description,
-      sanitizedName,
-      creator
-    })
+    key,
+    bucket: createFleekBucketString(`${key}-data`),
+    getOptions: ['data', 'key', 'publicUrl']
   })
-  // The function returns the hash of the file, the publicUrl, the key and the bucket.
-  const data = await response
-  return data
+  console.log({ response })
+  return response
 }
 
-export { postToFleekStorage, postMetadataToFleek }
+export { fetchFromFleekStorage, postToFleekStorage }
