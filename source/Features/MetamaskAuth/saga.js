@@ -1,21 +1,13 @@
 import { call, put, takeLatest } from 'redux-saga/effects'
 import {
-  connectToMetamask,
   reportError,
   reportMetamaskConnectionSuccess,
-  handleError,
   disconnectWallet,
-  setError,
   setWalletAddress,
-  setIsMetamaskInstalled,
   setChainId,
   completeStep
 } from './reducer'
 import isEmpty from 'crocks/predicates/isEmpty'
-import {
-  establishConnection,
-  establishConnectionSuccess
-} from '../../shared/hocs/withWeb3/reducer'
 
 import { requestEthAccount } from '../../shared/api/eth'
 import { ethRpcActions } from '../../shared/utils/jsonRpcHelpers'
@@ -30,7 +22,7 @@ export function* handleMetamaskConnection() {
 }
 
 function* handleConnectionDetails(action) {
-  console.log("inside")
+  console.log('inside')
   yield put(setWalletAddress(action.payload))
   yield put(setChainId(window.ethereum.chainId))
   yield put(completeStep({ id: 0 }))
@@ -39,7 +31,6 @@ function* handleConnectionDetails(action) {
 }
 
 function* handleNetworkChanged(action) {
-  const { payload } = action
   const { chainId, selectedAddress } = payload
   yield put(setChainId(chainId))
   yield put(setWalletAddress(selectedAddress))
@@ -58,7 +49,10 @@ function* handleAccountChanged(action) {
 }
 
 function* watchFetchMetamaskAccount() {
-  yield takeLatest(reportMetamaskConnectionSuccess().type, handleConnectionDetails)
+  yield takeLatest(
+    reportMetamaskConnectionSuccess().type,
+    handleConnectionDetails
+  )
   yield takeLatest(ethRpcActions.networkChanged, handleNetworkChanged)
 }
 

@@ -1,31 +1,22 @@
 import { chartColors } from './colors'
-import json from './governanceTokenData'
 
 const updateData = ({ newData = {}, labels = [], ...rest }) => ({
   ...rest,
   labels: [...labels, newData.label],
   currentSet: [].concat(rest.currentSet, newData.value)
 })
-const reducer = (acc, val) => {
-  if (acc.length === 0) {
-    const formattedValue = {}
-    return formattedValue
-  }
-  const formattedValue = {
-    ...acc
-  }
-  return acc.concat(formattedValue)
-}
-const createPieChart = (arr = []) => arr.reduceRight(
+
+const createPieChart = (arr = []) =>
+  arr.reduceRight(
     (acc, val) => {
-        let newData =  {
-            value: Number(val.balance) / Math.pow(10, val.contract_decimals),
-            label: val.address
-          }
+      let newData = {
+        value: Number(val.balance) / Math.pow(10, val.contract_decimals),
+        label: val.address
+      }
       acc = {
-          ...acc,
+        ...acc,
         ...updateData({
-        newData,
+          newData,
           labels: acc.labels,
           currentSet:
             acc.currentSet.length === 0
@@ -53,4 +44,4 @@ const createPieChart = (arr = []) => arr.reduceRight(
     }
   )
 
-    export { createPieChart }
+export { createPieChart }

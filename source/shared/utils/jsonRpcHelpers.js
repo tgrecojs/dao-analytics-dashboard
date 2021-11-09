@@ -1,13 +1,10 @@
-import { all, apply, call, put, take as takeAction } from 'redux-saga/effects'
+import { all, call, put, take as takeAction } from 'redux-saga/effects'
 import detectEthereumProvider from '@metamask/detect-provider'
 import {
   setChainId,
-  setWalletAddress,
-  connectToMetamask,
-  reportSuccess
+  setWalletAddress
 } from '../../Features/MetamaskAuth/reducer'
 import { establishConnection } from '../../shared/hocs/withWeb3/reducer'
-import { channel } from '@redux-saga/core'
 const isMetaMaskInstalled = () => {
   const { ethereum } = window
   return ethereum && ethereum.isMetaMask
@@ -26,7 +23,7 @@ const ethRpcActions = {
   networkDisconnected: 'ETHEREUM_DISCONNECTED'
 }
 
-const { accountChanged, networkChanged, disconnect, connect } = ethRpcMessages
+const { accountChanged, networkChanged, disconnect } = ethRpcMessages
 
 const createChannel = () => {
   const messageQueue = []
@@ -62,19 +59,6 @@ const createChannel = () => {
   }
 }
 
-const createEthereumDisconnectionChannel = () => {
-  const channel = createChannel()
-  const eth = window.ethereum
-  eth.on(disconnect, channel.put)
-  return channel
-}
-
-const createEthereumConnectionChannel = (provider) => {
-  const channel = createChannel()
-  const eth = window.ethereum
-  eth.on('connect', channel.put)
-  return channel
-}
 const createCurrentChainChannel = () => {
   const channel = createChannel()
   const eth = window.ethereum
@@ -103,24 +87,6 @@ const getProvider = async () => {
   const provider = await detectEthereumProvider()
   console.log({ provider })
   return { ...provider }
-}
-
-function* monitorEthDisonnection(channel) {
-  console.log('insidem monitorEthDisonnection##', { channel })
-  while (true) {
-    const info = yield call(channel.take) // Blocks until the promise resolves
-    console.log('ETHEREUM_DISCONNECTED##', { payload: info, channel })
-    yield put({ type: ethRpcActions.networkDisconnected, payload: info })
-  }
-}
-
-function* monitorEthConnection(channel) {
-  console.log('inside monitorEthConnection##', { channel })
-  while (true) {
-    const chainId = yield call(channel.take)
-    console.log('ETHEREUM_CONNECTED##', { chainId })
-    yield put(setChainId(chainId))
-  }
 }
 
 function* ethereumWalletConnectionWatcher() {
@@ -160,24 +126,16 @@ function* startEthereumConnection() {
   }
 }
 
-const updateWalletAddress = (address) => ({
-  type: 'UPDATE_WALLET_ADDRESS',
-  payload: address
-})
 function* monitorCurrentAccount(channel) {
-  console.log('insidem monitorCurrentAccount##', { channel })
   while (true) {
     const address = yield call(channel.take) // Blocks until the promise resolves
-    console.log('ACCOUNT_CHANGED##', { payload: address, channel })
     yield put(setWalletAddress(address))
   }
 }
 
 function* monitorCurrentChain(channel) {
-  console.log('insidem monitorCurrentChain##', { channel })
   while (true) {
     const currentChain = yield call(channel.take) // Blocks until the promise resolves
-    console.log('CHAIN_CHANGED##', { payload: currentChain, channel })
     yield put(setChainId(currentChain))
   }
 }

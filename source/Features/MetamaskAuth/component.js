@@ -1,14 +1,9 @@
-import {
-  connectToMetamask,
-  getConnectionStatus,
-  getWalletAddress,
-  getIsMetamaskInstalled
-} from './reducer'
+import { connectToMetamask, getIsMetamaskInstalled } from './reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { compose } from 'ramda'
 import CreateNFTForm from '../CreateNewDAO/component'
 import ExistingDAO from '../ExistingDAO/component'
-import { getTxnStatus, setupDaoAnalyticsPage } from '../CreateNewDAO/reducer'
+import { setupDaoAnalyticsPage } from '../CreateNewDAO/reducer'
 import {
   FormControl,
   FormControlLabel,
@@ -18,7 +13,6 @@ import {
 } from '@mui/material'
 import { setIsExistingOrg } from '../ExistingDAO/reducer'
 import { setter } from '../../shared/utils/input'
-import SetupDashboard from '../SetupDashboard/component'
 import { Box } from '@mui/system'
 import SubmitButton from '../../shared/MUI/SubmitButton'
 
@@ -34,7 +28,7 @@ const HomeScreen = ({ userAddress, onSubmit, txnStatus, exisitingOrgUser }) => {
   )
 }
 
-const Container = ({ exisitingOrgUser = false, onChange, children }) => {
+const Container = ({ onChange, children }) => {
   return (
     <Box sx={{ p: 2, bgcolor: '#fff' }}>
       <FormControl component="fieldset">
@@ -62,26 +56,22 @@ const Container = ({ exisitingOrgUser = false, onChange, children }) => {
     </Box>
   )
 }
-const Web3Authentication = () => {
+const HomePage = () => {
   const dispatch = useDispatch()
   const onConnectToMetamask = compose(dispatch, connectToMetamask)
   const onToggleExisting = compose(dispatch, setIsExistingOrg)
   const isMetamaskInstalled = useSelector(getIsMetamaskInstalled)
   const exisitingOrgUser = useSelector((x) => x.existingOrgState.isExistingOrg)
-  const dashboardSetupSteps = useSelector(
-    (x) => x.userSessionState.dashboardSetupSteps
-  )
-    const onSetupDao = compose(dispatch, setupDaoAnalyticsPage)
-  
-  const metamaskState = useSelector(x => x.metamaskProviderState.status)
-  console.log({metamaskS: metamaskState})
-  const txnStatus = useSelector(getTxnStatus)
+
+  const onSetupDao = compose(dispatch, setupDaoAnalyticsPage)
+
+  const metamaskState = useSelector((x) => x.metamaskProviderState.status)
   return !isMetamaskInstalled ? (
     <div>
       <p>Please make sure the metamask extension is installed and try again.</p>
       <button onClick={() => window.location.reload()}>Reload Page</button>
     </div>
-  ) : metamaskState.status === "disconnected" ? (
+  ) : metamaskState.status === 'disconnected' ? (
     <Box>
       <SubmitButton
         onClick={onConnectToMetamask}
@@ -128,4 +118,4 @@ const Web3Authentication = () => {
   )
 }
 
-export default Web3Authentication
+export default HomePage

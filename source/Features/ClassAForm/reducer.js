@@ -31,7 +31,7 @@ const {
     contractAddress: '0x',
     endpointSelection: '',
     mainnetOptions,
-    networkSelected: "1"
+    networkSelected: '1'
   }
 })
 

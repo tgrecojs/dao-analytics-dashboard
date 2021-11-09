@@ -1,29 +1,15 @@
 import Head from 'next/head'
 import CssBaseline from '@mui/material/CssBaseline'
-import { createTheme } from '@mui/material/styles'
 
-import Link from 'next/link'
 import { ThemeProvider } from '@mui/material/styles'
-
-import {
-  BottomNavigation,
-  Card,
-  Container,
-  Grid,
-  GridModal,
-  Typography,
-  CardContent,
-  useMediaQuery
-} from '@mui/material'
-import { deepOrange, deepPurple, lightBlue, orange } from '@mui/material/colors'
+import { Container } from '@mui/material'
 import theme from '../../MUI/theme'
-import { useMemo, useState } from 'react'
 const WithLayout = (ComposedComponent) => ({
+  // eslint-disable-next-line react/prop-types
   pageTitle = 'DAO Analytics Dashboard',
   ...rest
 }) => {
   // eslint-disable-next-line react/prop-types
-  console.log('inside WithLayout:::', {theme})
 
   return (
     <>

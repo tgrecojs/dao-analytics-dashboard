@@ -1,21 +1,13 @@
 import Onboarding from '../MetamaskAuth/component'
-import ViewDAO from '../ViewDAO/component'
 import { useDispatch, useSelector } from 'react-redux'
-import { isEmpty } from 'ramda'
-import { isMobile } from '../../shared/utils/mobile'
-import { getFleekMedia, getFleekMetadata } from '../MetamaskAuth/reducer'
 import {
-  FETCH_DAO_DATA,
-  FETCH_DAO_DATA_READY,
   FETCH_DAO_DATA_ERROR,
-  FETCH_GOVERNANCE_TOKEN_FINISHED,
   FETCH_GOVERNANCE_TOKEN_SUCCESS
 } from '../ExistingDAO/reducer'
 import RequestProgress from '../../shared/MUI/RequestProgress'
 import { Box } from '@mui/system'
-import { Grid, Select, Typography } from '@mui/material'
+import { Grid, Typography } from '@mui/material'
 import { Item } from '../../shared/MUI/Item'
-import GovernanceStats from '../GovernanceStats/component'
 import PieChart from '../../shared/charts/Pie/components'
 import ClassAForm from '../ClassAForm/component'
 import { createPieChart } from '../../shared/charts/format'
@@ -23,6 +15,7 @@ import SelectBox from '../../shared/MUI/SelectBox'
 import { setter } from '../../shared/utils/input'
 import { compose } from 'redux'
 import { setRequestLimit } from '../GovernanceStats/reducer'
+import { func } from 'prop-types'
 const OnboardWrapper = ({ children }) => (
   <Box
     sx={{
@@ -41,15 +34,18 @@ const OnboardWrapper = ({ children }) => (
   </Box>
 )
 
+OnboardWrapper.propTypes = {
+  children: func
+}
 const HomePage = () => {
-  const dispatch  = useDispatch()
+  const dispatch = useDispatch()
   const onChangeLimit = compose(dispatch, setRequestLimit)
-  const nftMedia = useSelector((x) => x.userSessionState.fleekMedia)
   const status = useSelector((x) => x.viewDaoAnalyticsState.status)
   const viewState = useSelector((x) => x.existingOrgState)
-  const governanceTokenDataState = useSelector(x => x.governanceTokenDataState)
-  const { requestLimitIncrements } = governanceTokenDataState
-  console.log({ env: process.env , governanceTokenDataState, s: governanceTokenDataState.currentDataset, form: createPieChart(governanceTokenDataState.currentDataset)})
+  const governanceTokenDataState = useSelector(
+    (x) => x.governanceTokenDataState
+  )
+  const { requestLimitIncrements } = governanceTokenDataState  
   return status === 'fetch DAO data ready' ? (
     <Onboarding />
   ) : status === FETCH_DAO_DATA_ERROR ? (
@@ -71,20 +67,27 @@ const HomePage = () => {
           </Item>
         </Grid>
         <Grid item xs={12} sm={6}>
-
-          <SelectBox label="Change token holders value" options={requestLimitIncrements}
-          onChange={setter(onChangeLimit)} />
+          <SelectBox
+            label="Change token holders value"
+            options={requestLimitIncrements}
+            onChange={setter(onChangeLimit)}
+          />
         </Grid>
         <Grid item xs={12}>
           <Item>
-          <PieChart
-          chartProps={{data: createPieChart(governanceTokenDataState.currentDataset)}}
+            <PieChart
+              chartProps={{
+                data: createPieChart(governanceTokenDataState.currentDataset)
+              }}
             />
           </Item>
         </Grid>
 
         <Grid item xs={10} sm={6}>
-          <Item> <ClassAForm /></Item>
+          <Item>
+            {' '}
+            <ClassAForm />
+          </Item>
         </Grid>
       </Grid>
     </Box>

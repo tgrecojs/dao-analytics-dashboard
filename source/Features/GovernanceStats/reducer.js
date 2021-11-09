@@ -35,8 +35,12 @@ const {
     currentWalletBalances: null
   },
   actions: {
-      setRequestLimit: (state, payload) => ({...state,  requestLimit: payload, currentDataset: state.currentDataset.slice(0, Number(payload))})
-    ,formatData: (state, payload) => ({
+    setRequestLimit: (state, payload) => ({
+      ...state,
+      requestLimit: payload,
+      currentDataset: state.currentDataset.slice(0, Number(payload))
+    }),
+    formatData: (state, payload) => ({
       ...state,
       formatted: createPieChart(state.currentDataset)
     }),

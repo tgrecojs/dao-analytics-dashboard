@@ -5,7 +5,7 @@ import {
   reportError,
   handleError
 } from './reducer'
-const getSetupPayload = ({existingOrgState}) => existingOrgState
+const getSetupPayload = ({ existingOrgState }) => existingOrgState
 import { postToFleekStorage } from '../../shared/api/fleek'
 import { getCurrentTimestamp, sanitizeString } from '../../shared/utils'
 import { getData, toggleForm } from '../ExistingDAO/reducer'
@@ -13,10 +13,8 @@ import { getData, toggleForm } from '../ExistingDAO/reducer'
 export function* fleekUploadSaga(action) {
   try {
     const payload = yield select(getSetupPayload)
- 
-      console.log('inside fleekUploadSaga',  payload)
-  
-    const { orgName: daoName, contractAddress: governanceToken }  = payload
+
+    const { orgName: daoName, contractAddress: governanceToken } = payload
     const sanitizedName = sanitizeString(daoName)
 
     const postParams = {
@@ -39,7 +37,6 @@ export function* fleekUploadSaga(action) {
 function* handleCreateDAOSuccess(action) {
   yield put(getData(action.payload))
 }
-
 
 function* createNewDAOWatcher() {
   yield takeLatest(setupDaoAnalyticsPage().type, fleekUploadSaga)

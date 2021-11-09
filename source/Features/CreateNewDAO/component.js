@@ -1,14 +1,11 @@
-import React, { useState, useRef } from 'react'
-import { string, func, number, bool } from 'prop-types'
+import { string, func } from 'prop-types'
 import { setter } from '../../shared/utils/input'
-import { Button, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import SubmitButton from '../../shared/MUI/SubmitButton'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOrgName, setContractAddress } from '../ExistingDAO/reducer'
-import { setupDaoAnalyticsPage } from './reducer'
 import { compose } from 'redux'
-const ethAddressRegex = '/0x[a-fA-F0-9]{40}/g'
 const getDaoInfo = ({ existingOrgState }) => existingOrgState
 
 const CreateNewDAO = ({ onSubmit }) => {
