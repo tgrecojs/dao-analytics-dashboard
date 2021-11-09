@@ -2,7 +2,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { establishConnection } from './withWeb3/reducer'
 
-import withMetamask from './withWeb3/component'
+import withWeb3Connection from './withWeb3/component'
 import withLayout from './withLayout/component'
 
 const withPage = (Component) =>
@@ -10,7 +10,7 @@ const withPage = (Component) =>
     connect(null, {
       initializeWeb3: establishConnection
     }),
-    withMetamask,
+    withWeb3Connection,
     withLayout
   )(Component)
 

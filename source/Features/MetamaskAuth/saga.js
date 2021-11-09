@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import { all, call, put, takeLatest } from 'redux-saga/effects'
 import {
   reportError,
   reportMetamaskConnectionSuccess,
@@ -22,30 +22,27 @@ export function* handleMetamaskConnection() {
 }
 
 function* handleConnectionDetails(action) {
-  console.log('inside')
   yield put(setWalletAddress(action.payload))
   yield put(setChainId(window.ethereum.chainId))
-  yield put(completeStep({ id: 0 }))
-  // TODO: implement automatic refresh
-  // ex. yield call()
 }
 
 function* handleNetworkChanged(action) {
   const { chainId, selectedAddress } = action.payload
   yield put(setChainId(chainId))
   yield put(setWalletAddress(selectedAddress))
-  // TODO: implement automatic refresh
-  // ex. yield call()
+
 }
 
 // eslint-disable-next-line no-unused-vars
 function* handleAccountChanged(action) {
   const { payload } = action
+  console.log("inside handleaccoutnChanged", action)
   if (!isEmpty(payload)) {
     yield put(setWalletAddress(payload))
   } else {
-    yield put(setWalletAddress([]))
     yield put(disconnectWallet())
+
+    yield put(setWalletAddress([]))
   }
 }
 
@@ -54,7 +51,10 @@ function* watchFetchMetamaskAccount() {
     reportMetamaskConnectionSuccess().type,
     handleConnectionDetails
   )
-  yield takeLatest(ethRpcActions.networkChanged, handleNetworkChanged)
+  yield all([
+    takeLatest(ethRpcActions.networkChanged, handleNetworkChanged),
+    takeLatest(ethRpcActions.accountChanged, handleAccountChanged)
+  ])
 }
 
 export default watchFetchMetamaskAccount

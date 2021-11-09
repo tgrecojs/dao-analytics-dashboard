@@ -58,22 +58,24 @@ const Container = ({ onChange, children }) => {
     </Box>
   )
 }
-const HomePage = () => {
+
+const MetamaskAuth = () => {
   const dispatch = useDispatch()
   const onConnectToMetamask = compose(dispatch, connectToMetamask)
   const onToggleExisting = compose(dispatch, setIsExistingOrg)
   const isMetamaskInstalled = useSelector(getIsMetamaskInstalled)
   const exisitingOrgUser = useSelector((x) => x.existingOrgState.isExistingOrg)
-
+  const userSessionState = useSelector(x => x.userSessionState)
   const onSetupDao = compose(dispatch, setupDaoAnalyticsPage)
 
-  const metamaskState = useSelector((x) => x.metamaskProviderState.status)
+  const metamaskState = useSelector((x) => x.metamaskProviderState)
   return !isMetamaskInstalled ? (
     <div>
       <p>Please make sure the metamask extension is installed and try again.</p>
       <button onClick={() => window.location.reload()}>Reload Page</button>
     </div>
-  ) : metamaskState.status === 'disconnected' ? (
+  ) : metamaskState.status === 'disconnected' ||
+    userSessionState.walletAddress.length !== 1 ? (
     <Box>
       <SubmitButton
         onClick={onConnectToMetamask}
@@ -102,7 +104,6 @@ const HomePage = () => {
       >
         DAO Analytics Dashboard
       </Box>
-
       <Box sx={{ p: 2, bgcolor: '#fff' }}>
         <Container
           exisitingOrgUser={exisitingOrgUser}
@@ -120,4 +121,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default MetamaskAuth

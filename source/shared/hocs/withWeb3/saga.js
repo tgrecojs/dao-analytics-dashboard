@@ -12,20 +12,20 @@ import { isMetaMaskInstalled } from '../../utils/jsonRpcHelpers'
 import { put, takeLatest } from 'redux-saga/effects'
 
 export function* handleWeb3Connection() {
-  const { ethereum } = window
   console.log('insidhe handleweb3connection')
+  if(!isMetaMaskInstalled()) {
+    yield put(setIsMetamaskInstalled(false))
+  } else {
+    const { ethereum } = window
   yield put(
     establishConnectionSuccess({
       chainId: ethereum.chainId,
       selectedAddress: ethereum.selectedAddress
     })
   )
-  if (!isMetaMaskInstalled()) {
-    yield put(setIsMetamaskInstalled(false))
-  } else {
-    yield put(setIsMetamaskInstalled(true))
-  }
-}
+  yield put(setIsMetamaskInstalled(true))
+
+}}
 
 function* handleConnectedUser(action) {
   const { payload } = action
