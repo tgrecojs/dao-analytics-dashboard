@@ -3,7 +3,8 @@
 
 ## Walk through video
 * Briefly goes through the flow and some of the codebase design.
-* [https://youtu.be/2Za83fB6WSw](https://youtu.be/2Za83fB6WSw)
+* [Walk Through Video #1](https://youtu.be/2Za83fB6WSw)
+* [Walk Through Video #2](https://youtu.be/ydgVsG67xNE
 
 ### Built with
 * Next.js
