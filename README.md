@@ -1,6 +1,9 @@
 ## Hosted at
 * [https://dao-dashboards.vercel.app/](https://dao-dashboards.vercel.app/)
 
+## Walk through video
+* Briefly goes through the flow and some of the codebase design.
+* [https://youtu.be/2Za83fB6WSw](https://youtu.be/2Za83fB6WSw)
 
 ### Built with
 * Next.js
