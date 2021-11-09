@@ -9,7 +9,8 @@ const ViewDAO = ({
     <Grid item>
       <Box sx={{ typography: 'h2' }}>{daoName}</Box>
       <Box sx={{ typography: 'h2' }}>{governanceToken}</Box>
-    </Grid></Box>
+    </Grid>
+    </Box>
 )
 
 ViewDAO.propTypes = {

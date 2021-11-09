@@ -27,6 +27,7 @@
     "@mui/icons-material": "^5.0.5",
     "@mui/material": "^5.0.6",
     "autodux": "^5.0.3",
+    "chart.js": "^3.6.0",
     "crocks": "^0.12.4",
     "daggy": "^1.4.0",
     "data.task": "^3.1.2",

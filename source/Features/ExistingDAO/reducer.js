@@ -4,19 +4,47 @@ const evaluateString = (str) => (str === 'true' ? true : false)
 const {
   reducer: existingOrgReducer,
   selectors: { getContractAddress, getOrgName, getIsExistingOrg },
-  actions: { setContractAddress, setOrgName, setIsExistingOrg, toggleForm }
+  actions: {
+    setContractAddress,
+    setOrgName,
+    setIsExistingOrg,
+    toggleForm,
+    setIsValidDao,
+    setGovernanceData,
+    setTokenAmountFn,
+    setGridInput
+  }
 } = autodux({
   slice: 'existing orginzation dashboard',
   initial: {
     orgName: '',
     contractAddress: '',
     isExistingOrg: false,
-    hideForm: false
+    hideForm: false,
+    isValidDao: false,
+    tokenAmountFn: () => {},
+    governanceTokenData: [],
+    gridInput: {}
   },
   actions: {
+    setTokenAmountFn: (state, payload) => ({
+      ...state,
+      tokenAmountFn: payload
+    }),
+    setGridInput: (state, payload) => ({
+      ...state,
+      gridInput: {
+        labels: payload.labels,
+        datasets: payload.datasets
+      }
+    }),
     toggleForm: (state) => ({
       ...state,
       hideForm: !state.hideForm
+    }),
+    setGovernanceData: (state, payload) => ({
+      ...state,
+      governanceTokenData: state.governanceTokenData.concat(payload)
     }),
     setContractAddress: (state, payload) => ({
       ...state,
@@ -29,15 +57,18 @@ const {
   }
 })
 
-const FETCH_DAO_DATA = 'fetching DAO data'
+const FETCH_DAO_DATA = 'fetching'
 const ADD_DATA_SET = 'adding dataset'
 const ADD_DATA_SET_ERROR = 'add dataset error'
 const ADD_DATA_SET_SUCCESS = 'add dataset success'
-const FETCH_DAO_DATA_ERROR = 'fetch DAO data error'
+const FETCH_DAO_DATA_ERROR = 'error'
+const FETCH_GOVERNANCE_TOKEN_ERROR = `${FETCH_DAO_DATA} governance error`
+const FETCH_GOVERNANCE_TOKEN_SUCCESS = `${FETCH_DAO_DATA} governance success`
+
 const IDLE = 'idle'
 const FETCH_DAO_DATA_READY = 'fetch DAO data ready'
 const FETCH_DAO_DATA_SUCCESS = 'success'
-
+const FETCH_GOVERNANCE_TOKEN_FINISHED = 'governance fetch finished'
 const viewDAOAnalyticsStates = [
   'initial',
   FETCH_DAO_DATA_READY,
@@ -65,6 +96,21 @@ const viewDAOAnalyticsStates = [
           ADD_DATA_SET_SUCCESS,
           ['handle add data success', FETCH_DAO_DATA_READY]
         ]
+      ],
+      [
+        'fetch governance token',
+        FETCH_DAO_DATA,
+        [
+          'report governance token fetch success',
+          FETCH_GOVERNANCE_TOKEN_SUCCESS,
+
+          ['handle governance success', FETCH_GOVERNANCE_TOKEN_FINISHED]
+        ],
+        [
+          'report governance token fetch error',
+          FETCH_GOVERNANCE_TOKEN_ERROR,
+          ['handle add data error', FETCH_DAO_DATA_SUCCESS]
+        ]
       ]
     ]
   ]
@@ -82,6 +128,10 @@ const mintDSM = dsm({
 const {
   actionCreators: {
     getData,
+    fetchGovernanceToken,
+    reportGovernanceTokenFetchSuccess,
+    reportGovernanceTokenFetchError,
+    handleGovernanceSuccess,
     reportError,
     reportSuccess,
     handleError,
@@ -94,6 +144,10 @@ const {
 } = mintDSM
 
 export {
+  fetchGovernanceToken,
+  reportGovernanceTokenFetchSuccess,
+  reportGovernanceTokenFetchError,
+  handleGovernanceSuccess,
   existingOrgReducer,
   setIsExistingOrg,
   getIsExistingOrg,
@@ -114,7 +168,14 @@ export {
   reducer,
   FETCH_DAO_DATA,
   FETCH_DAO_DATA_ERROR,
-  toggleForm
+  FETCH_GOVERNANCE_TOKEN_ERROR,
+  FETCH_GOVERNANCE_TOKEN_SUCCESS,
+  FETCH_GOVERNANCE_TOKEN_FINISHED,
+  toggleForm,
+  setIsValidDao,
+  setGovernanceData,
+  setTokenAmountFn,
+  setGridInput
 }
 
 export default mintDSM

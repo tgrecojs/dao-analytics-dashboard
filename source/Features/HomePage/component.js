@@ -1,15 +1,28 @@
 import Onboarding from '../MetamaskAuth/component'
 import ViewDAO from '../ViewDAO/component'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { isEmpty } from 'ramda'
 import { isMobile } from '../../shared/utils/mobile'
 import { getFleekMedia, getFleekMetadata } from '../MetamaskAuth/reducer'
-import { FETCH_DAO_DATA, FETCH_DAO_DATA_ERROR } from '../ExistingDAO/reducer'
+import {
+  FETCH_DAO_DATA,
+  FETCH_DAO_DATA_READY,
+  FETCH_DAO_DATA_ERROR,
+  FETCH_GOVERNANCE_TOKEN_FINISHED,
+  FETCH_GOVERNANCE_TOKEN_SUCCESS
+} from '../ExistingDAO/reducer'
 import RequestProgress from '../../shared/MUI/RequestProgress'
 import { Box } from '@mui/system'
-import { Grid, Typography } from '@mui/material'
+import { Grid, Select, Typography } from '@mui/material'
 import { Item } from '../../shared/MUI/Item'
-
+import GovernanceStats from '../GovernanceStats/component'
+import PieChart from '../../shared/charts/Pie/components'
+import ClassAForm from '../ClassAForm/component'
+import { createPieChart } from '../../shared/charts/format'
+import SelectBox from '../../shared/MUI/SelectBox'
+import { setter } from '../../shared/utils/input'
+import { compose } from 'redux'
+import { setRequestLimit } from '../GovernanceStats/reducer'
 const OnboardWrapper = ({ children }) => (
   <Box
     sx={{
@@ -29,18 +42,21 @@ const OnboardWrapper = ({ children }) => (
 )
 
 const HomePage = () => {
+  const dispatch  = useDispatch()
+  const onChangeLimit = compose(dispatch, setRequestLimit)
   const nftMedia = useSelector((x) => x.userSessionState.fleekMedia)
-  const status = useSelector((x) => x.setupDAOAnalyticsState.status)
-  const viewState = useSelector((x) => x.viewDaoAnalyticsState)
-  return viewState.status === FETCH_DAO_DATA_ERROR ? (
+  const status = useSelector((x) => x.viewDaoAnalyticsState.status)
+  const viewState = useSelector((x) => x.existingOrgState)
+  const governanceTokenDataState = useSelector(x => x.governanceTokenDataState)
+  const { requestLimitIncrements } = governanceTokenDataState
+  console.log({ env: process.env , governanceTokenDataState, s: governanceTokenDataState.currentDataset, form: createPieChart(governanceTokenDataState.currentDataset)})
+  return status === 'fetch DAO data ready' ? (
+    <Onboarding />
+  ) : status === FETCH_DAO_DATA_ERROR ? (
     <OnboardWrapper>
       <Item>Error</Item>
     </OnboardWrapper>
-  ) : viewState.status === FETCH_DAO_DATA ? (
-    <OnboardWrapper>
-      <RequestProgress />{' '}
-    </OnboardWrapper>
-  ) : viewState.status === 'success' ? (
+  ) : status === 'governance fetch finished' ? (
     <Box
       sx={{
         width: '100%'
@@ -50,17 +66,33 @@ const HomePage = () => {
         <Grid item xs={12}>
           <Item>
             <Typography align="center" variant="h2">
-              DAO Name: {viewState.payload.daoName}
+              DAO Name: {viewState.orgName}
             </Typography>
           </Item>
-        </Grid>{' '}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+
+          <SelectBox label="Change token holders value" options={requestLimitIncrements}
+          onChange={setter(onChangeLimit)} />
+        </Grid>
+        <Grid item xs={12}>
+          <Item>
+          <PieChart
+          chartProps={{data: createPieChart(governanceTokenDataState.currentDataset)}}
+            />
+          </Item>
+        </Grid>
+
+        <Grid item xs={10} sm={6}>
+          <Item> <ClassAForm /></Item>
+        </Grid>
       </Grid>
     </Box>
-  ) : (
-    <>
-      <Onboarding />
-    </>
-  )
+  ) : status === FETCH_GOVERNANCE_TOKEN_SUCCESS || status === 'fetching' ? (
+    <OnboardWrapper>
+      <RequestProgress />{' '}
+    </OnboardWrapper>
+  ) : null
 }
 
 export default HomePage

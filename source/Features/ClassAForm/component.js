@@ -1,3 +1,4 @@
+import { Select } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux'
 import { compose } from 'redux'
 import SelectBox from '../../shared/MUI/SelectBox'
@@ -10,34 +11,16 @@ import {
 } from './reducer'
 
 const ClassAForm = () => {
-  const contractAddress = useSelector((x) =>
-    getContractAddress(x.classAFormState)
-  )
-  const mainnetOptions = useSelector((x) => x.classAFormState.mainnetOptions)
+  const {networkSelected, mainnetOptions} = useSelector(x => x.classADataState)
+
 
   const dispatch = useDispatch()
   const onChangeAddress = compose(dispatch, setContractAddress)
   const onNetworkChange = compose(dispatch, setNetworkSelected)
 
   return (
-    <>
-      <div>
-        <input
-          type="text"
-          onChange={setter(onChangeAddress)}
-          value={contractAddress}
-        />
-        <div>
-          <label>Select Blockchain</label>
-          <select onChange={setter(onNetworkChange)}>
-            {mainnetOptions &&
-              mainnetOptions.map(({ chain_id, name }) => (
-                <SelectBox key={chain_id} value={chain_id} label={name} />
-              ))}
-          </select>
-        </div>
-      </div>
-    </>
+    <SelectBox label="Select Blockchain" value={networkSelected} onChange={setter(onNetworkChange)} 
+    options={mainnetOptions} />
   )
 }
 export default ClassAForm

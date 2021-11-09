@@ -7,8 +7,13 @@ import {
 } from '../Features/MetamaskAuth/reducer'
 import { reducer as web3ConnectionReducer } from './hocs/withWeb3/reducer'
 import { reducer as setupDAOAnalyticsReducer } from '../Features/CreateNewDAO/reducer'
-import { existingOrgReducer, reducer as viewDaoAnalyticsReducer } from '../Features/ExistingDAO/reducer'
- 
+import {
+  existingOrgReducer,
+  reducer as viewDaoAnalyticsReducer
+} from '../Features/ExistingDAO/reducer'
+import { reducer as classADataReducer } from '../Features/ClassAForm/reducer'
+import { reducer as governanceTokenDataReducer } from '../Features/GovernanceStats/reducer'
+
 import rootSaga from './sagas'
 import createSagaMiddleware from '@redux-saga/core'
 const exampleInitialState = {
@@ -16,7 +21,9 @@ const exampleInitialState = {
   userSessionState: userSessionReducer(),
   setupDAOAnalyticsState: setupDAOAnalyticsReducer(),
   existingOrgState: existingOrgReducer(),
-  viewDaoAnalyticsState: viewDaoAnalyticsReducer()
+  viewDaoAnalyticsState: viewDaoAnalyticsReducer(),
+  classADataState: classADataReducer(),
+  governanceTokenDataState: governanceTokenDataReducer()
 }
 
 export function initializeStore(initialState = exampleInitialState) {
@@ -27,8 +34,9 @@ export function initializeStore(initialState = exampleInitialState) {
     setupDAOAnalyticsState: setupDAOAnalyticsReducer,
     web3ConnectionState: web3ConnectionReducer,
     existingOrgState: existingOrgReducer,
-    viewDaoAnalyticsState: viewDaoAnalyticsReducer
-
+    viewDaoAnalyticsState: viewDaoAnalyticsReducer,
+    classADataState: classADataReducer,
+    governanceTokenDataState: governanceTokenDataReducer
   })
   return {
     ...createStore(

@@ -58,7 +58,9 @@ const sanitizeString = compose(hyphenateString, trim, removeSpecialChars)
 const getCurrentTimestamp = () => new Date().toUTCString()
 const formatFleekResponse = ({ data = new Uint8Array() }) =>
   JSON.parse(String.fromCharCode.apply(null, new Uint8Array(data)))
+const calculateTokenSupply = decimals => amount => Number(amount) / Math.pow(10, decimals)
 export {
+  calculateTokenSupply,
   asyncGet,
   formatFleekResponse,
   getCurrentTimestamp,
