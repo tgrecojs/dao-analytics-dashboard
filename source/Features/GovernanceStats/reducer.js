@@ -40,7 +40,7 @@ const {
       requestLimit: payload,
       currentDataset: state.currentDataset.slice(0, Number(payload))
     }),
-    formatData: (state, payload) => ({
+    formatData: (state) => ({
       ...state,
       formatted: createPieChart(state.currentDataset)
     }),

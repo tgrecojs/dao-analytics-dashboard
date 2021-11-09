@@ -16,6 +16,7 @@ import { setter } from '../../shared/utils/input'
 import { Box } from '@mui/system'
 import SubmitButton from '../../shared/MUI/SubmitButton'
 
+// eslint-disable-next-line react/prop-types
 const HomeScreen = ({ userAddress, onSubmit, txnStatus, exisitingOrgUser }) => {
   return exisitingOrgUser ? (
     <ExistingDAO />
@@ -28,6 +29,7 @@ const HomeScreen = ({ userAddress, onSubmit, txnStatus, exisitingOrgUser }) => {
   )
 }
 
+// eslint-disable-next-line react/prop-types
 const Container = ({ onChange, children }) => {
   return (
     <Box sx={{ p: 2, bgcolor: '#fff' }}>

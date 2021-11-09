@@ -10,7 +10,7 @@ import { postToFleekStorage } from '../../shared/api/fleek'
 import { getCurrentTimestamp, sanitizeString } from '../../shared/utils'
 import { getData, toggleForm } from '../ExistingDAO/reducer'
 
-export function* fleekUploadSaga(action) {
+export function* fleekUploadSaga() {
   try {
     const payload = yield select(getSetupPayload)
 
@@ -23,7 +23,6 @@ export function* fleekUploadSaga(action) {
       sanitizedName,
       governanceTokenAddress: governanceToken
     }
-    console.log({ postParams })
     yield put(toggleForm())
     const setupNewDAOResponse = yield call(postToFleekStorage, postParams)
 

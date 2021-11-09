@@ -1,5 +1,4 @@
 import fleekStorage from '@fleekhq/fleek-storage-js'
-const stringifyPayload = (obj = {}) => `"${JSON.stringify(obj)}"`
 const postToFleekStorage = async ({
   sanitizedName = 'default DAO name',
   orginizationName = '',

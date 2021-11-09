@@ -23,7 +23,7 @@ const ethRpcActions = {
   networkDisconnected: 'ETHEREUM_DISCONNECTED'
 }
 
-const { accountChanged, networkChanged, disconnect } = ethRpcMessages
+const { accountChanged, networkChanged } = ethRpcMessages
 
 const createChannel = () => {
   const messageQueue = []
@@ -77,12 +77,6 @@ const createCurrentAccountChannel = () => {
   return channel
 }
 
-const createConnectionChannel = () => {
-  const channel = createChannel()
-  const eth = window.ethereum
-  eth.on('connect', channel.put)
-  return channel
-}
 const getProvider = async () => {
   const provider = await detectEthereumProvider()
   console.log({ provider })

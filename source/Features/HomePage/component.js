@@ -45,7 +45,7 @@ const HomePage = () => {
   const governanceTokenDataState = useSelector(
     (x) => x.governanceTokenDataState
   )
-  const { requestLimitIncrements } = governanceTokenDataState  
+  const { requestLimitIncrements } = governanceTokenDataState
   return status === 'fetch DAO data ready' ? (
     <Onboarding />
   ) : status === FETCH_DAO_DATA_ERROR ? (

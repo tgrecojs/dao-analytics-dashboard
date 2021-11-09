@@ -31,13 +31,14 @@ function* handleConnectionDetails(action) {
 }
 
 function* handleNetworkChanged(action) {
-  const { chainId, selectedAddress } = payload
+  const { chainId, selectedAddress } = action.payload
   yield put(setChainId(chainId))
   yield put(setWalletAddress(selectedAddress))
   // TODO: implement automatic refresh
   // ex. yield call()
 }
 
+// eslint-disable-next-line no-unused-vars
 function* handleAccountChanged(action) {
   const { payload } = action
   if (!isEmpty(payload)) {

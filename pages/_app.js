@@ -1,7 +1,7 @@
 import React from 'react'
 import withReduxStore from '../lib/with-redux-store'
 import { Provider } from 'react-redux'
-import { func, object } from 'prop-types'
+import { object } from 'prop-types'
 import { CacheProvider } from '@emotion/react'
 
 import createEmotionCache from '../source/shared/MUI/createEmotionCache'

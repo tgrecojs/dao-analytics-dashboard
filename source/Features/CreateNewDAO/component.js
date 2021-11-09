@@ -13,9 +13,11 @@ const CreateNewDAO = ({ onSubmit }) => {
   const onSetDaoName = compose(dispatch, setOrgName)
   const onSetContractAddress = compose(dispatch, setContractAddress)
 
-  const { orgName: daoName, contractAddress, hideForm } = useSelector(
-    getDaoInfo
-  )
+  const {
+    orgName: daoName,
+    contractAddress,
+    hideForm
+  } = useSelector(getDaoInfo)
 
   return !hideForm ? (
     <div>

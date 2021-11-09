@@ -1,6 +1,5 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import logger from 'redux-logger'
-import { composeWithDevTools } from 'redux-devtools-extension'
 import {
   reducer as ethProviderReducer,
   web3Reducer as userSessionReducer
@@ -16,7 +15,7 @@ import { reducer as governanceTokenDataReducer } from '../Features/GovernanceSta
 
 import rootSaga from './sagas'
 import createSagaMiddleware from '@redux-saga/core'
-const exampleInitialState = {
+const defaultInitialState = {
   metamaskProviderState: ethProviderReducer(),
   userSessionState: userSessionReducer(),
   setupDAOAnalyticsState: setupDAOAnalyticsReducer(),
@@ -26,7 +25,7 @@ const exampleInitialState = {
   governanceTokenDataState: governanceTokenDataReducer()
 }
 
-export function initializeStore(initialState = exampleInitialState) {
+export function initializeStore(initialState = defaultInitialState) {
   const sagaMiddleware = createSagaMiddleware()
   const rootReducer = combineReducers({
     metamaskProviderState: ethProviderReducer,

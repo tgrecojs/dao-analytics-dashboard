@@ -1,18 +1,15 @@
 import {
   establishConnectionSuccess,
-  establishConnectionFailed,
   establishConnection
 } from './reducer'
 import {
   connectToMetamask,
-  setWalletAddress,
   setChainId,
   setIsMetamaskInstalled
 } from '../../../Features/MetamaskAuth/reducer'
 import { handleMetamaskConnection } from '../../../Features/MetamaskAuth/saga'
 import { isMetaMaskInstalled } from '../../utils/jsonRpcHelpers'
 import { put, takeLatest } from 'redux-saga/effects'
-import { call } from 'crocks/core/_unit'
 
 export function* handleWeb3Connection() {
   const { ethereum } = window

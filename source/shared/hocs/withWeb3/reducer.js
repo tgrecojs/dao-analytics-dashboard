@@ -1,16 +1,7 @@
 import dsm from 'redux-dsm'
-import { createSelector } from 'reselect'
-
-const id = (x) => x
 
 const CONNECTED = 'connected'
 const DISCONNECTED = 'disconnected'
-const FETCHING = 'fetching provider'
-const MINTING_TOKEN = 'minting token'
-const FETCHING_ERROR = 'error'
-const FETCHING_SUCCESS = 'success'
-const ERROR = 'error'
-const IDLE = 'idle'
 
 const web3ConnectionStates = [
   'initial',

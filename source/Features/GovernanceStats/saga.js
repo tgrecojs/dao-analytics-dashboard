@@ -10,14 +10,12 @@ import {
   fetchCovalentData,
   makeClassAEndpoint
 } from '../../shared/api/covalent'
-const makeQueryParams = (arr = [['page-size', 1000]]) => Object.fromEntries(arr) //?
 const getAnalyticsState = ({ viewDaoAnalyticsState }) =>
   viewDaoAnalyticsState.payload
 const getGovernaneTokenData = ({ existingOrgState }) =>
   existingOrgState.governanceTokenData
 
 import testData from '../../shared/charts/governanceTokenData'
-let DEV_ENV = true
 
 import { aggregateDataset, formatData } from './reducer'
 function* fetchGovernanceTokenSaga(action) {
@@ -48,17 +46,11 @@ const parseResponse = ({ data }) => ({
 })
 const add = (x) => (y) => x + y
 const addOne = add(1)
-const head = (arr = []) => {
-  const [value] = arr
-  return value
-}
-function* handleTestSuccess(action) {
-  yield put(handleGovernanceSuccess(testData))
-}
+
 function* handleGovernanceTokenResponse(action) {
   const { payload } = action
 
-  const { items, pagination, pageNumber, hasMore } = parseResponse(payload)
+  const { items, pageNumber, hasMore } = parseResponse(payload)
   yield put(aggregateDataset(items))
   if (hasMore) {
     yield put(
@@ -67,8 +59,6 @@ function* handleGovernanceTokenResponse(action) {
         governanceToken: payload.governanceToken
       })
     )
-    yield put(handleGovernanceSuccess(testData))
-    yield put(formatData())
   } else {
     const governanceTokens = yield select(getGovernaneTokenData)
     yield put(handleGovernanceSuccess(governanceTokens))

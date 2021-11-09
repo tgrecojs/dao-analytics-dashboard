@@ -7,7 +7,6 @@ import {
   fetchGovernanceToken,
   setIsValidDao
 } from './reducer'
-import { reportSuccess as reportCreateNewDAOSuccess } from '../CreateNewDAO/reducer'
 import { formatFleekResponse, sanitizeString } from '../../shared/utils'
 
 export function* fetchAnalyticsSaga(action) {

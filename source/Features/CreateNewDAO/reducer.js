@@ -1,11 +1,7 @@
 import dsm from 'redux-dsm'
 
 const SETUP_DAO_ANALYTICS_PAGE = 'sending data'
-const MINTING_TOKEN = 'minting token'
-const MINT_ERROR = 'mint token error'
-const MINT_SUCCESS = 'mint token success'
 const SEND_ERROR = 'send data error'
-const IDLE = 'idle'
 const SETUP_DAO_READY = 'setup dao ready'
 const SEND_SUCCESS = 'send data success'
 
