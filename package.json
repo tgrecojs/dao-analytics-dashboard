@@ -60,6 +60,7 @@
     "prop-types": "^15.7.2",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "riteway": "^6.2.1"
+    "tailwind.macro": "^0.5.10",
+    "tailwindcss": "^2.0.3"
   }
 }
