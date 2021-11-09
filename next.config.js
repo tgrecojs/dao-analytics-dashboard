@@ -5,5 +5,6 @@ const env = {
 };
 
 module.exports = {
-  env
+  env,
+  distDir: 'build'
 };
