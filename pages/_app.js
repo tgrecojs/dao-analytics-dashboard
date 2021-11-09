@@ -1,13 +1,14 @@
 import React from 'react'
 import withReduxStore from '../lib/with-redux-store'
 import { Provider } from 'react-redux'
-import { object } from 'prop-types'
+import { func, object } from 'prop-types'
 import { CacheProvider } from '@emotion/react'
 
 import createEmotionCache from '../source/shared/MUI/createEmotionCache'
 const styleCache = createEmotionCache()
 
 function MyApp({
+  // eslint-disable-next-line react/prop-types
   Component,
   emotionCache = styleCache,
   pageProps,
@@ -23,7 +24,6 @@ function MyApp({
 }
 MyApp.propTypes = {
   emotionCache: object,
-  Component: object,
   pageProps: object,
   reduxStore: object
 }
