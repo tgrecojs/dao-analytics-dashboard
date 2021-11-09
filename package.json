@@ -1,7 +1,7 @@
 {
   "name": "nextjs-dapp",
   "version": "1.0.0",
-  "description": "",
+  "description": "next.js app for viewing DAO analytics data using the colvalent API",
   "main": "index.js",
   "scripts": {
     "dev": "next",
@@ -11,12 +11,12 @@
     "lint": "eslint ./source",
     "lint:fix": "eslint --fix ./source",
     "test": "NODE_ENV=test node -r @babel/register -r @babel/polyfill source/index.test.js",
-    "watch": "watch 'clear && npm run -s test | tap-nirvana && npm run -s lint' source",
-    "watch:test": "watch 'clear && npm run -s test | tap-nirvana'"
+    "watch": "watch 'clear && npm run -s test | tap && npm run -s lint' source",
+    "watch:test": "watch 'clear && npm run -s test | tap'"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["Covalent", "Defi", "Analytics"],
+  "author": "Thomas Greco <tgreco@criptext.com>",
+  "license": "gpl-3.0",
   "dependencies": {
     "@emotion/cache": "^11.5.0",
     "@emotion/react": "^11.5.0",
@@ -28,14 +28,11 @@
     "@mui/material": "^5.0.6",
     "autodux": "^5.0.3",
     "chart.js": "^3.6.0",
-    "crocks": "^0.12.4",
-    "daggy": "^1.4.0",
-    "data.task": "^3.1.2",
+    "crocks": "^0.12.4",   
     "isomorphic-unfetch": "^3.1.0",
     "metamask-extension-provider": "^3.0.0",
     "next": "^12.0.3",
     "ramda": "^0.27.1",
-    "re-reselect": "^4.0.0",
     "react": "^17.0.1",
     "react-chartjs-2": "^3.3.0",
     "react-dom": "^17.0.1",
@@ -64,7 +61,6 @@
     "prop-types": "^15.7.2",
     "redux-devtools-extension": "^2.13.8",
     "redux-logger": "^3.0.6",
-    "riteway": "^6.2.1",
     "tailwind.macro": "^0.5.10",
     "tailwindcss": "^2.0.3"
   }
